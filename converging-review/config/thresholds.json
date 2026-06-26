@@ -1,0 +1,22 @@
+{
+  "antiOverconfidencePctHigh": 0.6,
+  "livelockJaccardMax": 0.5,
+  "livelockPIndexMax": 0.5,
+  "noveltyStallMinRound": 5,
+  "noveltyStallWindow": 3,
+  "confidenceCollapseRounds": 3,
+  "capOverflowMustFixThreshold": 3,
+  "perAgentCaps": {
+    "av": 5,
+    "lc": 3,
+    "cm": 3,
+    "pm": 3
+  },
+  "softCapOwnBullets": 5,
+  "hardCeilingPerAgent": 8,
+  "wordsPerFinding": 100,
+  "largePlanLOC": 500,
+  "transRoundEscalationMinRounds": 3,
+  "parseRetryBudget": 2,
+  "concurrentSessionWaitMs": 2000
+}
