@@ -58,14 +58,14 @@ The repository contains **two forms of the same tool**:
 
 | Form | What it is | Who it's for |
 |---|---|---|
-| [`coverging-review.md`](coverging-review.md) | A single self-contained prompt document with the entire methodology | If you don't want to run scripts — just feed this file to the model |
+| [`converging-review.md`](converging-review.md) | A single self-contained prompt document with the entire methodology | If you don't want to run scripts — just feed this file to the model |
 | [`converging-review/`](converging-review/) | A full Claude Code skill: the same prompt + Node scripts + subagents | If you want deterministic mechanics (convergence metrics, round state, caps) |
 
-**The skill was born from the md document** and does essentially the same thing. The only difference is execution: the document relies entirely on the model, while the skill offloads metric computation, round tracking, and cap enforcement to deterministic Node scripts. Anyone wary of running scripts can simply use `coverging-review.md`.
+**The skill was born from the md document** and does essentially the same thing. The only difference is execution: the document relies entirely on the model, while the skill offloads metric computation, round tracking, and cap enforcement to deterministic Node scripts. Anyone wary of running scripts can simply use `converging-review.md`.
 
 ---
 
-## `coverging-review.md` — the methodology in one file
+## `converging-review.md` — the methodology in one file
 
 A self-contained prompt: "launch 4 parallel Opus agents, each with its own mandate + shared rules." It contains everything needed for the review without any infrastructure:
 
@@ -161,7 +161,7 @@ To uninstall, remove `~/.claude/skills/converging-review` and the four `~/.claud
 
 Nothing here pins a model or a reasoning effort. The skill and all four agents run at the session effort you set with `/config`, and on the session model: the agents declare `model: inherit`, and `SKILL.md` declares no model at all — for both the skill and the agent parsers, an absent `model` and `model: inherit` resolve to the same thing, no override.
 
-That is a deliberate divergence from `coverging-review.md`, whose first line asks for "4 parallel Opus agents". If you want that guarantee back regardless of which model the session is on, replace `model: inherit` with `model: opus` in the four `agents/cr-*.md` files.
+That is a deliberate divergence from `converging-review.md`, whose first line asks for "4 parallel Opus agents". If you want that guarantee back regardless of which model the session is on, replace `model: inherit` with `model: opus` in the four `agents/cr-*.md` files.
 
 ---
 
@@ -183,7 +183,7 @@ With no arguments the skill picks up the active plan itself. You can also pass i
 
 If you don't want to run scripts — close the plan-mode questionnaire and type something like this in the console:
 
-> Analyze your plan using `coverging-review.md` until full convergence is reached.
+> Analyze your plan using `converging-review.md` until full convergence is reached.
 
 The model will read the document, run the plan through the 4 roles, and iterate rounds until the plan converges (0 MUST-FIX) or until a livelock/novelty-stall escape fires.
 
@@ -193,7 +193,7 @@ Both options do the same thing — choose based on whether you need the determin
 
 ## Compatibility
 
-It was developed and tested on **Claude Code**. But there's nothing Claude-specific in the methodology itself — the core is just a prompt plus a fan-out of independent agents and a few deterministic helper scripts. So it should port to **other agentic systems** that support subagents/parallel fan-out and tool use (file read, search, web). The `coverging-review.md` form is the most portable: it's a plain prompt with no infrastructure, so you can feed it to almost any capable agent. The skill form relies on Claude Code's subagent dispatch and `.mjs` helpers, so porting it would mean adapting those two pieces to the target platform.
+It was developed and tested on **Claude Code**. But there's nothing Claude-specific in the methodology itself — the core is just a prompt plus a fan-out of independent agents and a few deterministic helper scripts. So it should port to **other agentic systems** that support subagents/parallel fan-out and tool use (file read, search, web). The `converging-review.md` form is the most portable: it's a plain prompt with no infrastructure, so you can feed it to almost any capable agent. The skill form relies on Claude Code's subagent dispatch and `.mjs` helpers, so porting it would mean adapting those two pieces to the target platform.
 
 ## When NOT to use it
 
