@@ -100,6 +100,11 @@ The same prompt, but the mechanics are offloaded to deterministic helpers, and t
 converging-review/
 ├── SKILL.md                       # entry point: the orchestrator's 10 steps
 ├── examples.md                    # few-shot examples of correct/incorrect findings
+├── agents/                        # the 4 sub-agents, copied to ~/.claude/agents/
+│   ├── cr-artefact-verifier.md    # agent 1 — bureaucrat
+│   ├── cr-logic-contradictions.md # agent 2 — lawyer
+│   ├── cr-completeness.md         # agent 3 — debugger
+│   └── cr-pre-mortem.md           # agent 4 — on-call operator
 ├── config/
 │   └── thresholds.json            # all numeric thresholds and limits
 ├── references/                    # reference docs included from SKILL.md
@@ -128,6 +133,35 @@ Round state is stored by the plan's `canonicalHash` at `<cwd>/.claude/converging
 5. 0 MUST-FIX, all CLARIFICATION closed, no quarantine → **ready** (`ExitPlanMode`).
 6. 1–3 MUST-FIX → apply those fixes and re-run the review.
 7. >3 MUST-FIX → replan, scope down to MVP.
+
+---
+
+## Installation
+
+The skill and its sub-agents live in two different places — Claude Code discovers each by directory, so both copies are required.
+
+```bash
+# 1. The skill itself
+cp -r converging-review ~/.claude/skills/converging-review
+
+# 2. The 4 sub-agents (SKILL.md dispatches them by name and hard-errors if they are missing)
+mkdir -p ~/.claude/agents
+cp converging-review/agents/cr-*.md ~/.claude/agents/
+```
+
+Then restart the Claude Code session — skills and agents are both discovered at session start.
+
+For a project-local install, use `.claude/skills/` and `.claude/agents/` inside the repository instead of `~/.claude/`.
+
+Requirements: Node.js (the helper scripts are ESM `.mjs`, no dependencies) and a Claude Code build that accepts `subagent_type` for custom agents.
+
+To uninstall, remove `~/.claude/skills/converging-review` and the four `~/.claude/agents/cr-*.md` files.
+
+### Model and effort
+
+Nothing here pins a model or a reasoning effort. The skill and all four agents run at the session effort you set with `/config`, and on the session model: the agents declare `model: inherit`, and `SKILL.md` declares no model at all — for both the skill and the agent parsers, an absent `model` and `model: inherit` resolve to the same thing, no override.
+
+That is a deliberate divergence from `coverging-review.md`, whose first line asks for "4 parallel Opus agents". If you want that guarantee back regardless of which model the session is on, replace `model: inherit` with `model: opus` in the four `agents/cr-*.md` files.
 
 ---
 

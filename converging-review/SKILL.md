@@ -4,8 +4,6 @@ description: Critically reviews active plans, design specs, prompts, or skills v
 when_to_use: Trigger on /converging-review, plan critique requests, before ExitPlanMode on non-trivial plans, when user pastes a draft and asks "review this", multi-round refinement of design docs.
 argument-hint: "[plan-path | inline-plan-text | empty for auto-detect]"
 allowed-tools: Bash(node *) Bash(cat *) Bash(rm *) Bash(printf *) Read Glob Grep WebSearch WebFetch Agent AskUserQuestion
-model: opus
-effort: high
 ---
 
 # Converging Review
